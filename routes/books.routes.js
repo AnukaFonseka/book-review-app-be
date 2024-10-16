@@ -8,6 +8,7 @@ function bookRoutes() {
 
     router.post("/", bookController.addBook);
     router.get("/", bookController.getAllBooks);
+    router.put("/:id", bookController.updateBook);
 
     return router;
 }
