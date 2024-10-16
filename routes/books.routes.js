@@ -9,6 +9,9 @@ function bookRoutes() {
     router.post("/", bookController.addBook);
     router.get("/", bookController.getAllBooks);
     router.put("/:id", bookController.updateBook);
+    router.get("/:id", bookController.getBookById);
+    router.delete("/:id", bookController.deleteBookById);
+
 
     return router;
 }
