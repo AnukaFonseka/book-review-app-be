@@ -19,8 +19,9 @@ async function addBook(book) {
 //Get All Books
 async function getAllBooks() {
     try{
-        const result = await Books.getAllBooks();
+        const result = await Books.findAll();
         return {
+            status: 200,
             error: false,
             payload: result
         }
@@ -29,6 +30,7 @@ async function getAllBooks() {
         throw error;
     }
 }
+
 
 module.exports = {
     addBook,
