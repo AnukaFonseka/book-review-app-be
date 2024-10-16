@@ -27,6 +27,34 @@ async function addBook(req, res) {
     }
 }
 
+//Get All Books'
+async function getAllBooks(req, res) {
+    try {
+
+        const result = await bookService.getAllBooks();
+
+        if(result.error) {
+            return res.status(result.status).json({
+                error: true,
+                payload: result.payload
+            }); 
+        } else {
+            return res.status(result.status).json({
+                error: false,
+                payload: result.payload
+            });
+        }
+    } catch (error) {
+        console.log("Error get All Books Controller: ", error);
+        return res.status(500).json({
+            error: true,
+            payload: "Internal Server Error"
+        })
+    }
+}
+    
+
 module.exports = {
-    addBook
+    addBook,
+    getAllBooks
 }
