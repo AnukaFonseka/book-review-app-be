@@ -16,6 +16,21 @@ async function addBook(book) {
     
 }
 
+//Get All Books
+async function getAllBooks() {
+    try{
+        const result = await Books.getAllBooks();
+        return {
+            error: false,
+            payload: result
+        }
+    } catch (error) {
+        console.error('Error getting all books Service: ', error);
+        throw error;
+    }
+}
+
 module.exports = {
-    addBook
+    addBook,
+    getAllBooks
 }
