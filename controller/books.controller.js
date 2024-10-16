@@ -53,7 +53,34 @@ async function getAllBooks(req, res) {
     }
 }
 
-//Get Book by ID
+
+// Get Book By ID
+async function getBookById(req, res) {
+    try {
+        const bookId = req.params.id;  // Get book ID from the request parameters
+
+        const result = await bookService.getBookById(bookId);  // Fetch book by ID using the service
+
+        if(result.error) {
+            return res.status(result.status).json({
+                error: true,
+                payload: result.payload
+            });
+        } else {
+            return res.status(result.status).json({
+                error: false,
+                payload: result.payload
+            });
+        }
+    } catch (error) {
+        console.log("Error in getBookById Controller: ", error);
+        return res.status(500).json({
+            error: true,
+            payload: "Internal Server Error"
+        });
+    }
+}
+
 
 
 //Update Book details
@@ -91,5 +118,6 @@ async function updateBook(req, res) {
 module.exports = {
     addBook,
     getAllBooks,
-    updateBook
+    updateBook,
+    getBookById
 }
