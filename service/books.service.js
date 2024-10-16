@@ -31,6 +31,32 @@ async function getAllBooks() {
     }
 }
 
+
+// Get Book By ID
+async function getBookById(bookId) {
+    try {
+        const result = await Books.findByPk(bookId);  // Fetch the book by primary key (ID)
+
+        if (!result) {
+            return {
+                status: 404,
+                error: true,
+                payload: "Book not found"
+            };
+        }
+
+        return {
+            status: 200,
+            error: false,
+            payload: result
+        };
+    } catch (error) {
+        console.error('Error getting book by ID Service: ', error);
+        throw error;
+    }
+}
+
+
 //Update book details.
 async function updateBook(id, updatedData) {
     try {
@@ -63,5 +89,6 @@ async function updateBook(id, updatedData) {
 module.exports = {
     addBook,
     getAllBooks,
-    updateBook
+    updateBook,
+    getBookById
 }
