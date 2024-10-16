@@ -85,10 +85,37 @@ async function updateBook(id, updatedData) {
 
 }
 
+// Delete Book By ID
+async function deleteBookById(bookId) {
+    try {
+        const book = await Books.findByPk(bookId);  // Fetch the book by primary key (ID)
+
+        if (!book) {
+            return {
+                status: 404,
+                error: true,
+                payload: "Book not found"
+            };
+        }
+
+        await book.destroy();  // Delete the book if it exists
+
+        return {
+            status: 200,
+            error: false,
+            payload: "Book deleted successfully"
+        };
+    } catch (error) {
+        console.error('Error deleting book by ID Service: ', error);
+        throw error;
+    }
+}
+
 
 module.exports = {
     addBook,
     getAllBooks,
     updateBook,
-    getBookById
+    getBookById,
+    deleteBookById
 }
