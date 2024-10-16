@@ -7,7 +7,7 @@ function bookRoutes() {
     router.use(express.json());
 
     router.post("/", bookController.addBook);
-    router.get("/getAllBooks", bookController.getAllBooks);
+    router.get("/", bookController.getAllBooks);
 
     return router;
 }
