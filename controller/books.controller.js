@@ -49,7 +49,7 @@ async function getAllBooks(req, res) {
         return res.status(500).json({
             error: true,
             payload: "Internal Server Error"
-        })
+        });
     }
 }
 
