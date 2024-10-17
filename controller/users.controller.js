@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const userService = require("../service/users.service");
+const { Users } = require("../models"); 
 const { sign } = require("jsonwebtoken");
 
 //Register User 
@@ -158,12 +159,45 @@ async function updateUser(req, res) {
     }
 }
 
+// Delete User
+async function deleteUser(req, res) {
+    try {
+        const id = req.params.id;
+
+        // Find user by ID
+        const user = await Users.findByPk(id);
+
+        if (!user) {
+            return res.status(404).json({
+                error: true,
+                payload: "User not found."
+            });
+        }
+
+        // Delete the user
+        await user.destroy();
+
+        return res.status(200).json({
+            error: false,
+            payload: "User successfully deleted."
+        });
+
+    } catch (error) {
+        console.error('Error Deleting User: ', error);
+        return res.status(500).json({
+            error: true,
+            payload: error.message
+        });
+    }
+}
+
 module.exports = {
     registerUser,
     loginUser,
     getUserById,
     getAllUsers,
-    updateUser 
+    updateUser,
+    deleteUser 
 }
 
 
