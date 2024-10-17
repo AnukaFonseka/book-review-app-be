@@ -37,6 +37,7 @@ async function loginUser(req, res) {
         const { username, password } = req.body;
 
         const user = await userService.loginUser(username);
+        console.log(user);
 
         if (!user) {
             return res.json({ 
@@ -54,7 +55,7 @@ async function loginUser(req, res) {
             }
                 else{
                   const accessToken = sign(
-                    { username: user.username, id: user.id, role: user.roles.role, roleId: user.roleId },
+                    { username: user.username, id: user.id},
                     "importantsecret"
                   );
                   res.status(200).json({
