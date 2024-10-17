@@ -7,6 +7,7 @@ function userRatingsRoutes() {
     router.use(express.json());
 
     router.post("/", userRatingsController.addRatingsAndReviews);
+    router.get("/:id", userRatingsController.getRatingsByBookId);
     
 
     return router;

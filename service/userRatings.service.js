@@ -1,4 +1,4 @@
-const { UserRatings } = require('../models')
+const { UserRatings, Books } = require('../models')
 
 
 async function addRatingsAndReviews (rating) {
@@ -31,7 +31,47 @@ async function addRatingsAndReviews (rating) {
 
     } 
 
+    //Get ratings by book Id for a book
+    async function getRatingsByBookId(bookId) {
+        try {
+
+         const book = await Books.findByPk(bookId);  // Fetch the book by primary key (ID)
+
+        if (!book) {
+            return {
+                status: 400,
+                error: true,
+                payload: "Invalid Book ID"
+            };
+        }
+         const result = await UserRatings.findAll({
+                where: {
+                    bookId: bookId,
+                }
+            });  
+            //console.log(result);
+    
+            if (!result || result==[]) {
+                return {
+                    status: 204,
+                    error: false,
+                    payload: "No reviews and ratings"
+                };
+            }
+    
+            return {
+                status: 200,
+                error: false,
+                payload: result
+            };
+        } catch (error) {
+            console.error('Error getting ratings book by ID Service: ', error);
+            throw error;
+        }
+    }
+
     module.exports ={
-        addRatingsAndReviews
+        addRatingsAndReviews,
+        getRatingsByBookId
     }
 
