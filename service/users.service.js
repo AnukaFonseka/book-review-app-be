@@ -140,11 +140,54 @@ async function getAllUsers() {
     }
 }
 
+// Update User
+async function updateUser(id, userData) {
+    try {
+        const user = await Users.findByPk(id);
+
+        if (!user) {
+            return {
+                error: true,
+                status: 404,
+                payload: "User not found."
+            };
+        }
+
+        // If a password is provided, hash it
+        if (userData.password) {
+            userData.password = await bcrypt.hash(userData.password, 10);
+        }
+
+        // Update user with the new data
+        await user.update(userData);
+
+        const updatedUser = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            createdOn: user.createdAt.toISOString().split('T')[0]
+        };
+
+        return {
+            error: false,
+            status: 200,
+            payload: updatedUser
+        };
+
+    } catch (error) {
+        return {
+            error: true,
+            status: 500,
+            payload: error.message
+        };
+    }
+}
 
 module.exports = {
     createUser,
     loginUser,
     getUserById,
-    getAllUsers
-}
-
+    getAllUsers,
+    updateUser 
+};
