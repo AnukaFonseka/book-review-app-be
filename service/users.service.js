@@ -112,9 +112,123 @@ async function getUserById(id) {
     }
 }
 
+
+// Get All Users
+async function getAllUsers() {
+    try {
+        const users = await Users.findAll({
+            attributes: { exclude: ["password"] }
+        });
+
+        if (!users || users.length === 0) {
+            return {
+                error: true,
+                status: 404,
+                payload: "No users found."
+            };
+        }
+
+        const response = users.map(user => ({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            createdOn: user.createdAt.toISOString().split('T')[0]
+        }));
+
+        return {
+            error: false,
+            status: 200,
+            payload: response
+        };
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+// Update User
+async function updateUser(id, userData) {
+    try {
+        const user = await Users.findByPk(id);
+
+        if (!user) {
+            return {
+                error: true,
+                status: 404,
+                payload: "User not found."
+            };
+        }
+
+        // If a password is provided, hash it
+        if (userData.password) {
+            userData.password = await bcrypt.hash(userData.password, 10);
+        }
+
+        // Update user with the new data
+        await user.update(userData);
+
+        const updatedUser = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            createdOn: user.createdAt.toISOString().split('T')[0]
+        };
+
+        return {
+            error: false,
+            status: 200,
+            payload: updatedUser
+        };
+
+    } catch (error) {
+        return {
+            error: true,
+            status: 500,
+            payload: error.message
+        };
+    }
+}
+
+// Delete User by ID
+async function deleteUser(id) {
+    try {
+        // Find the user by ID
+        const user = await Users.findByPk(id);
+
+        if (!user) {
+            return {
+                error: true,
+                status: 404,
+                payload: "User not found."
+            };
+        }
+
+        // Delete the user
+        await user.destroy();
+
+        return {
+            error: false,
+            status: 200,
+            payload: "User successfully deleted."
+        };
+
+    } catch (error) {
+        console.error('Error Deleting User Service: ', error);
+        return {
+            error: true,
+            status: 500,
+            payload: error.message
+        };
+    }
+}
+
 module.exports = {
     createUser,
     loginUser,
-    getUserById
-}
-
+    getUserById,
+    getAllUsers,
+    updateUser,
+    deleteUser 
+};
