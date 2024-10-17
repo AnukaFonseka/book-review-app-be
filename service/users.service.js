@@ -60,9 +60,14 @@ async function loginUser(username) {
             where: { 
                 username: username
                  
-            } 
+            },
+            include: {
+                model: Roles,
+                as: 'roles',
+                attributes: ['role']
             
         }
+    } 
         
         );
         return user;
