@@ -1,4 +1,4 @@
-const { Users } = require("../models");
+const { Users, Roles } = require("../models");
 const bcrypt = require("bcrypt");
 
 //Register User
