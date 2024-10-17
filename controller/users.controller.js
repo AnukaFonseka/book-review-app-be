@@ -6,10 +6,10 @@ const { sign } = require("jsonwebtoken");
 async function registerUser(req, res) {
     try {
         
-        const {name,email, username, password} = req.body;
+        const {name,email, username, password,roleId} = req.body;
 
         const hashPassword = await bcrypt.hash(password, 10);
-        const result = await userService.createUser(name,email,username, hashPassword);
+        const result = await userService.createUser(name,email,username, hashPassword,roleId);
         
         if(result.error) {
             return res.status(result.status).json ({
@@ -28,6 +28,7 @@ async function registerUser(req, res) {
             error: true,
             payload: error
         })
+    
     }
 }
 
@@ -55,7 +56,7 @@ async function loginUser(req, res) {
             }
                 else{
                   const accessToken = sign(
-                    { username: user.username, id: user.id},
+                    { username: user.username, id: user.id, role: user.roles.role, roleId: user.roleId },
                     "importantsecret"
                   );
                   res.status(200).json({

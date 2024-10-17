@@ -1,8 +1,8 @@
-const { Users } = require("../models");
+const { Users, Roles } = require("../models");
 const bcrypt = require("bcrypt");
 
 //Register User
-async function createUser(name,email,username, hashPassword) {
+async function createUser(name,email,username, hashPassword, roleId) {
     try { 
         const usernameExist = await Users.findOne({
             where: {
@@ -37,6 +37,7 @@ async function createUser(name,email,username, hashPassword) {
             email: email,
             username: username,
             password: hashPassword,
+            roleId: roleId
            
           });
 
@@ -59,7 +60,7 @@ async function loginUser(username) {
             where: { 
                 username: username
                  
-            }
+            } 
             
         }
         
@@ -76,6 +77,10 @@ async function getUserById(id) {
     try {
         const user = await Users.findByPk(id, {
             attributes: {exclude: ["password"]},
+            include: [{
+                model: Roles,
+                as: 'roles'
+            }]
         });
 
         if(!user){
@@ -91,7 +96,9 @@ async function getUserById(id) {
             name: user.name,
             email: user.email,
             username: user.username,
-            createdOn: user.createdAt.toISOString().split('T')[0]
+            createdOn: user.createdAt.toISOString().split('T')[0],
+            role: user.roles.role,
+            roleId: user.roles.id
         }
 
         return {
