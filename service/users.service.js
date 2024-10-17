@@ -71,8 +71,43 @@ async function loginUser(username) {
     }
 }
 
+//Get User By ID
+async function getUserById(id) {
+    try {
+        const user = await Users.findByPk(id, {
+            attributes: {exclude: ["password"]},
+        });
+
+        if(!user){
+            return {
+                error : true,
+                status: 404,
+                payload: "User not Found."
+            }
+        }
+
+        const response = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            createdOn: user.createdAt.toISOString().split('T')[0]
+        }
+
+        return {
+            error: false,
+            status: 200,
+            payload: response
+        };
+
+    } catch (error) {
+        throw error;
+    }
+}
+
 module.exports = {
     createUser,
-    loginUser
+    loginUser,
+    getUserById
 }
 
