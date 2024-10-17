@@ -191,10 +191,44 @@ async function updateUser(id, userData) {
     }
 }
 
+// Delete User by ID
+async function deleteUser(id) {
+    try {
+        // Find the user by ID
+        const user = await Users.findByPk(id);
+
+        if (!user) {
+            return {
+                error: true,
+                status: 404,
+                payload: "User not found."
+            };
+        }
+
+        // Delete the user
+        await user.destroy();
+
+        return {
+            error: false,
+            status: 200,
+            payload: "User successfully deleted."
+        };
+
+    } catch (error) {
+        console.error('Error Deleting User Service: ', error);
+        return {
+            error: true,
+            status: 500,
+            payload: error.message
+        };
+    }
+}
+
 module.exports = {
     createUser,
     loginUser,
     getUserById,
     getAllUsers,
-    updateUser 
+    updateUser,
+    deleteUser 
 };
