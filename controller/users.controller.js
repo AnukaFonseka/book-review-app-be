@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const userService = require("../service/user.service");
-const { sign } = require("jsonwebtoken");
+const userService = require("../service/users.service");
+//const { sign } = require("jsonwebtoken");
 
 //Register User 
 async function registerUser(req, res) {
