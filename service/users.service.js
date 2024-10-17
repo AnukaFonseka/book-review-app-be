@@ -52,6 +52,30 @@ async function createUser(name,email,username, hashPassword) {
     }
 }
 
-module.exports = {
-    createUser
+//Login User
+async function loginUser(username) {
+    try {
+        const user = await Users.findOne({ 
+            where: { 
+                username: username 
+            },
+            // include: {
+            //     model: UserRoles,
+            //     as: 'roles',
+            //     attributes: ['role']
+            // }
+        }
+        
+        );
+        return user;
+    } catch (error) {
+        console.error('Error Login In User Service : ',error);
+        throw error;
+    }
 }
+
+module.exports = {
+    createUser,
+    loginUser
+}
+
