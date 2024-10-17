@@ -9,6 +9,7 @@ function UserRoutes() {
     router.post("/", userController.registerUser);
     router.post("/sign-in", userController.loginUser);
     router.get("/:id", userController.getUserById);
+    router.get("/", userController.getAllUsers);
 
     return router;
 }
