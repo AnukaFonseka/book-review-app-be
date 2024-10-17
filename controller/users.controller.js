@@ -99,9 +99,35 @@ async function getUserById(req, res) {
     }
 }
 
+// Get All Users
+async function getAllUsers(req, res) {
+    try {
+        const result = await userService.getAllUsers();
+
+        if (result.error) {
+            return res.status(result.status).json({
+                error: true,
+                payload: result.payload
+            });
+        } else {
+            return res.status(result.status).json({
+                error: false,
+                payload: result.payload
+            });
+        }
+
+    } catch (error) {
+        return res.status(500).json({
+            error: true,
+            payload: error.message
+        });
+    }
+}
+
 module.exports = {
     registerUser,
     loginUser,
-    getUserById
+    getUserById,
+    getAllUsers
 }
 

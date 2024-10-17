@@ -105,9 +105,46 @@ async function getUserById(id) {
     }
 }
 
+
+// Get All Users
+async function getAllUsers() {
+    try {
+        const users = await Users.findAll({
+            attributes: { exclude: ["password"] }
+        });
+
+        if (!users || users.length === 0) {
+            return {
+                error: true,
+                status: 404,
+                payload: "No users found."
+            };
+        }
+
+        const response = users.map(user => ({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            username: user.username,
+            createdOn: user.createdAt.toISOString().split('T')[0]
+        }));
+
+        return {
+            error: false,
+            status: 200,
+            payload: response
+        };
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+
 module.exports = {
     createUser,
     loginUser,
-    getUserById
+    getUserById,
+    getAllUsers
 }
 
