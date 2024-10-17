@@ -21,6 +21,9 @@ try{
     db.Users.belongsTo(db.Roles, { as: "roles", foreignKey: "roleId"});
     db.Roles.hasMany(db.Users, {as: "users", foreignKey: "roleId"});
 
+    db.Books.belongsToMany(db.Users, {through: "UserRatings", foreignKey: "bookId", onDelete: "cascade"});
+    db.Users.belongsToMany(db.Books, {through: "UserRatings", foreignKey: "userId", onDelete: "cascade"});
+
 } catch (error) {
     console.log(error);
 }
