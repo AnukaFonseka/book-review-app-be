@@ -57,13 +57,10 @@ async function loginUser(username) {
     try {
         const user = await Users.findOne({ 
             where: { 
-                username: username 
-            },
-            // include: {
-            //     model: UserRoles,
-            //     as: 'roles',
-            //     attributes: ['role']
-            // }
+                username: username
+                 
+            }
+            
         }
         
         );
