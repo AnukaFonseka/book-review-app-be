@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-    const UserRoles = sequelize.define("UserRatings", {
+    const UserRatings = sequelize.define("UserRatings", {
         ratings: {
             type: DataTypes.INTEGER,
             allowNull: false
@@ -11,6 +11,6 @@ module.exports = (sequelize, DataTypes) => {
     }, 
     
     );
-
-    return UserRoles
+ 
+    return UserRatings
 }
