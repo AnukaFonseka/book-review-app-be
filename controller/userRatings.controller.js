@@ -27,6 +27,34 @@ async function addRatingsAndReviews(req, res) {
     }
 }
 
+//Get All user ratings for a book
+async function getRatingsByBookId(req, res) {
+    try {
+        const {id}  = req.params;
+        const result = await UserRatingsService.getRatingsByBookId(id);
+
+        if(result.error) {
+            return res.status(result.status).json ({
+                error: true,
+                payload: result.payload
+            })
+        } else {
+            return res.status(result.status).json ({
+                error: false,
+                payload: result.payload
+            })
+        }
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json ({
+            error: true,
+            payload: error
+        })
+    }
+}
+
 module.exports = {
-    addRatingsAndReviews
+    addRatingsAndReviews,
+    getRatingsByBookId
 }
