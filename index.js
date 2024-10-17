@@ -12,6 +12,10 @@ app.use(cors());
 
 const db = require("./models");
 
+// Routers
+const routes = require("./routes/index.routes");
+app.use("/", routes);
+
 db.sequelize.sync({ alter: true }).then(() => {
     app.listen(3000, () => {
         console.log("SERVER RUNNING ON PORT 3000");
