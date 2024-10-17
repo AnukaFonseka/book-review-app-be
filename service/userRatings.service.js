@@ -45,9 +45,10 @@ async function addRatingsAndReviews (rating) {
             };
         }
          const result = await UserRatings.findAll({
-                where: {
+                where: { 
                     bookId: bookId,
-                }
+                },
+                attributes: ['ratings','reviews'],
             });  
             //console.log(result);
     
