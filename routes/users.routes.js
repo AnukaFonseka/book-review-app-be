@@ -10,7 +10,8 @@ function UserRoutes() {
     router.post("/sign-in", userController.loginUser);
     router.get("/:id", userController.getUserById);
     router.get("/", userController.getAllUsers);
-
+    router.put("/:id", userController.updateUser);
+    
     return router;
 }
 
