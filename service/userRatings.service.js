@@ -70,8 +70,11 @@ async function addRatingsAndReviews (rating) {
         }
     }
 
-    module.exports ={
-        addRatingsAndReviews,
-        getRatingsByBookId
-    }
+
+
+
+module.exports = {
+    addRatingsAndReviews,
+    getRatingsByBookId
+};
 

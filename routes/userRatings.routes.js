@@ -9,6 +9,7 @@ function userRatingsRoutes() {
     router.post("/", userRatingsController.addRatingsAndReviews);
     router.get("/:id", userRatingsController.getRatingsByBookId);
     
+    
 
     return router;
 }
