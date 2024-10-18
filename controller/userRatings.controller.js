@@ -54,6 +54,36 @@ async function getRatingsByBookId(req, res) {
     }
 }
 
+
+//Calculate average rating for a book
+async function getAverageRating(req, res) {
+    try{
+        const { bookId } = req.params;
+
+        const result = await UserRatingsService.getAverageRating(bookId);
+
+        if(result.error) {
+            return res.status(result.status).json ({
+                error: true,
+                payload: result.payload
+            })
+        } else {
+            return res.status(result.status).json ({
+                error: false,
+                payload: result.payload
+            })
+        }
+
+    } catch (error){
+        console.error("Error getting average user rating controller: ", error);
+        return res.status(500).json({
+            error: true,
+            payload: "Internal Server Error"
+        });
+
+    }
+}
+
 // Get a user rating for a specific book by user ID and book ID
 async function getUserRatingForBook(req, res) {
     try {
@@ -150,13 +180,14 @@ async function deleteUserRatingForBook(req, res) {
             error: true,
             payload: "Server Error",
         });
-    }
-}
+
 
 module.exports = {
     addRatingsAndReviews,
     getRatingsByBookId,
+    getAverageRating
     getUserRatingForBook,
     editUserRatingForBook,
     deleteUserRatingForBook 
 }
+
