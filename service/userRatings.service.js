@@ -71,8 +71,130 @@ async function addRatingsAndReviews (rating) {
         }
     }
 
-    module.exports ={
-        addRatingsAndReviews,
-        getRatingsByBookId
-    }
 
+// Get a user rating for a specific book by user ID and book ID
+async function getUserRatingForBook(bookId, userId) {
+    try {
+        // Find the rating based on the bookId and userId
+        const rating = await UserRatings.findOne({
+            where: {
+                bookId: bookId,
+                userId: userId,
+            },
+        });
+
+        // If no rating is found, return a 404 status
+        if (!rating) {
+            return {
+                status: 404,
+                error: true,
+                payload: "Rating not found for the specified book and user",
+            };
+        }
+
+        // Return the found rating
+        return {
+            status: 200,
+            error: false,
+            payload: rating,
+        };
+
+    } catch (error) {
+        console.error('Error getting user rating for book by bookId and userId in Service: ', error);
+        return {
+            status: 500,
+            error: true,
+            payload: "Server error",
+        };
+    }
+}
+
+// Edit a user rating for a specific book by user ID and book ID
+async function editUserRatingForBook(bookId, userId, updatedRating) {
+    try {
+        // Check if the rating exists
+        const existingRating = await UserRatings.findOne({
+            where: {
+                bookId: bookId,
+                userId: userId,
+            },
+        });
+
+        if (!existingRating) {
+            return {
+                status: 404,
+                error: true,
+                payload: "Rating not found for the specified book and user",
+            };
+        }
+
+        // Update the existing rating with new data
+        const result = await existingRating.update({
+            ratings: updatedRating.ratings || existingRating.ratings, // Update only if new data is provided
+            reviews: updatedRating.reviews || existingRating.reviews, // Update only if new data is provided
+        });
+
+        // Return the updated rating
+        return {
+            status: 200,
+            error: false,
+            payload: result,
+        };
+
+    } catch (error) {
+        console.error('Error editing user rating for book by bookId and userId in Service: ', error);
+        return {
+            status: 500,
+            error: true,
+            payload: "Server error",
+        };
+    }
+}
+
+// Delete a user rating for a specific book by user ID and book ID
+async function deleteUserRatingForBook(bookId, userId) {
+    try {
+        // Find the rating based on the bookId and userId
+        const existingRating = await UserRatings.findOne({
+            where: {
+                bookId: bookId,
+                userId: userId,
+            },
+        });
+
+        // If no rating is found, return a 404 status
+        if (!existingRating) {
+            return {
+                status: 404,
+                error: true,
+                payload: "Rating not found for the specified book and user",
+            };
+        }
+
+        // Delete the rating
+        await existingRating.destroy();
+
+        // Return success message
+        return {
+            status: 200,
+            error: false,
+            payload: "Rating deleted successfully",
+        };
+
+    } catch (error) {
+        console.error('Error deleting user rating for book by bookId and userId in Service: ', error);
+        return {
+            status: 500,
+            error: true,
+            payload: "Server error",
+        };
+    }
+}
+
+module.exports = {
+    addRatingsAndReviews,
+    getRatingsByBookId,
+    getUserRatingForBook,
+    editUserRatingForBook,
+    deleteUserRatingForBook 
+}
