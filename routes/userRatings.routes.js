@@ -9,6 +9,10 @@ function userRatingsRoutes() {
     router.post("/", userRatingsController.addRatingsAndReviews);
     router.get("/:id", userRatingsController.getRatingsByBookId);
     router.get("/avgRating/:bookId", userRatingsController.getAverageRating);
+    router.get("/books/:bookId/users/:userId", userRatingsController.getUserRatingForBook);
+    router.put("/books/:bookId/users/:userId", userRatingsController.editUserRatingForBook);
+    router.delete("/books/:bookId/users/:userId", userRatingsController.deleteUserRatingForBook);
+
     
 
     return router;
