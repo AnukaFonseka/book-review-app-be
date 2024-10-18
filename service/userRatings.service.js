@@ -71,8 +71,46 @@ async function addRatingsAndReviews (rating) {
         }
     }
 
+    //Calculate average rating of a book
+    async function getAverageRating(bookId) {
+        try{
+            const ratings = await UserRatings.findAll ({
+                where: {
+                    bookId: bookId
+                },
+                attributes: ['ratings']
+            });
+
+            if(ratings.length ===0) {
+                return {
+                    status: 204,
+                    error: true,
+                    payload: "No user ratings"
+                };
+            }
+            const totalRatings = ratings.reduce((sum,record) => sum + record.ratings,0);
+            const numberOfRatings = ratings.length;
+
+            const averageRating = totalRatings/ numberOfRatings;
+
+            return {
+                status: 200,
+                error: false,
+                payload: averageRating
+            }
+
+            
+        }  catch (error){
+             console.error('Error calculating average rating service: ', error);
+             throw error;
+        }
+    }
+        
+    
+
     module.exports ={
         addRatingsAndReviews,
-        getRatingsByBookId
+        getRatingsByBookId,
+        getAverageRating
     }
 
