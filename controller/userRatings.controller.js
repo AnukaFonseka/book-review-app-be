@@ -180,12 +180,13 @@ async function deleteUserRatingForBook(req, res) {
             error: true,
             payload: "Server Error",
         });
-
+    }
+}
 
 module.exports = {
     addRatingsAndReviews,
     getRatingsByBookId,
-    getAverageRating
+    getAverageRating,
     getUserRatingForBook,
     editUserRatingForBook,
     deleteUserRatingForBook 
