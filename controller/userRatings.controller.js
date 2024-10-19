@@ -61,6 +61,7 @@ async function getAverageRating(req, res) {
         const { bookId } = req.params;
 
         const result = await UserRatingsService.getAverageRating(bookId);
+        console.log(result.payload)
 
         if(result.error) {
             return res.status(result.status).json ({

@@ -91,7 +91,7 @@ async function addRatingsAndReviews (rating) {
                 return {
                     status: 204,
                     error: true,
-                    payload: "No user ratings"
+                    payload: "N/A"
                 };
             }
             const totalRatings = ratings.reduce((sum,record) => sum + record.ratings,0);
