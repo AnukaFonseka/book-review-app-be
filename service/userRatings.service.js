@@ -1,4 +1,4 @@
-const { UserRatings, Books } = require('../models')
+const { UserRatings, Books, Users } = require('../models')
 
 
 async function addRatingsAndReviews (rating) {
@@ -48,7 +48,12 @@ async function addRatingsAndReviews (rating) {
                 where: { 
                     bookId: bookId,
                 },
-                attributes: ['ratings','reviews'],
+                attributes: ['ratings','reviews','userId'],
+                include: [{
+                    model: Users,
+                    attributes: ['name', 'username']
+
+                }]
             });  
             //console.log(result);
     

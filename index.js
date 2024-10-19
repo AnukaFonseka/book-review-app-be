@@ -24,6 +24,9 @@ try{
     db.Books.belongsToMany(db.Users, {through: "UserRatings", foreignKey: "bookId", onDelete: "cascade"});
     db.Users.belongsToMany(db.Books, {through: "UserRatings", foreignKey: "userId", onDelete: "cascade"});
 
+    db.Users.hasMany(db.UserRatings, { foreignKey: 'userId', onDelete: 'cascade' });
+    db.UserRatings.belongsTo(db.Users, { foreignKey: 'userId', onDelete: 'cascade' });
+
 } catch (error) {
     console.log(error);
 }
