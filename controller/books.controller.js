@@ -3,7 +3,13 @@ const bookService = require('../service/books.service')
 //Add new book
 async function addBook(req, res) {
     try {
+        const userRoleid = req.user.roleId;
         const book = req.body;
+
+        if (![1].includes(userRoleid)) {
+            return res.status(403).json({ error: true, payload: "Unauthorized. Only Admins can add Books." });
+        }
+
 
         const result = await bookService.addBook(book);
 
@@ -85,9 +91,14 @@ async function getBookById(req, res) {
 //Update Book details
 async function updateBook(req, res) {
     try{
-        
+        const userRoleid = req.user.roleId;
         const { id } = req.params;
         const updatedData = req.body;
+
+        if (![1].includes(userRoleid)) {
+            return res.status(403).json({ error: true, payload: "Unauthorized. Only Admins can update Books." });
+        }
+
         
         const result = await bookService.updateBook(id, updatedData);
 
@@ -115,7 +126,13 @@ async function updateBook(req, res) {
 // Delete Book By ID
 async function deleteBookById(req, res) {
     try {
+        const userRoleid = req.user.roleId;
         const bookId = req.params.id;  // Get book ID from the request parameters
+
+        if (![1].includes(userRoleid)) {
+            return res.status(403).json({ error: true, payload: "Unauthorized. Only Admins can delete Books." });
+        }
+
 
         const result = await bookService.deleteBookById(bookId);  // Delete the book by ID using the service
 
