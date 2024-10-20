@@ -12,6 +12,41 @@ app.use(cors());
 
 const db = require("./models");
 
+const swaggerjsdoc = require("swagger-jsdoc");
+const swaggerui = require("swagger-ui-express");
+const postmanToOpenApi = require("postman-to-openapi");
+
+const swaggerJson = require('./openapi.json');
+
+
+
+app.use('/api-docs', swaggerui.serve, swaggerui.setup(swaggerJson));
+
+app.get('/swagger-json', (req,res)=> {
+    res.setHeader('Content-Type', 'application/json');
+    res.send(swaggerJson);
+});
+
+app.get('/generate-yml', async(req,res)=> {
+    const postmanCollection = 'collection.json'
+
+    const outputFile = 'collection.yml'
+
+    try{
+        const result = await postmanToOpenApi(postmanCollection, outputFile, {
+            defaultTag: 'General'
+        })
+
+        const result2 = await postmanToOpenApi(postmanCollection, null, {
+            defaultTag: 'General'
+        })
+        console.log('OpenAPI specs: ${result}')
+
+    }catch(err){
+        console.log(err)
+    }
+})
+
 // Routers
 const routes = require("./routes/index.routes");
 app.use("/", routes);
